@@ -1,0 +1,19 @@
+docker run --name Gimnasio  -e MYSQL_ROOT_PASSWORD=admin -d -p 3307:3306 mysql:latest
+-- Crear los roles
+CREATE ROLE admin;
+CREATE ROLE user;
+
+-- Crear los usuarios con sus respectivas contraseñas
+CREATE USER 'maeli'@'%' IDENTIFIED BY '1234';
+CREATE USER 'cris'@'%' IDENTIFIED BY '1234';
+
+-- Asignar los roles
+GRANT admin TO 'maeli'@'%';
+GRANT user TO 'cris'@'%';
+
+-- Dar privilegios necesarios para los roles
+GRANT ALL PRIVILEGES ON *.* TO 'maeli'@'%' WITH GRANT OPTION;  -- Permisos de admin
+GRANT SELECT, INSERT, UPDATE ON `Gimnasio`.* TO 'cris'@'%'; -- Permisos limitados de usuario
+
+-- Aplicar los cambios
+FLUSH PRIVILEGES;
